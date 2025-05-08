@@ -30,7 +30,7 @@ public class RedditApi(HttpClient client)
         try
         {
             var resMessage = await client.SendAsync(reqMessage);
-            Bot.Log(resMessage.ToString());
+            Bot.Log(resMessage.StatusCode.ToString());
             resMessage.EnsureSuccessStatusCode();
             var resContent = await resMessage.Content.ReadAsStringAsync();
             
