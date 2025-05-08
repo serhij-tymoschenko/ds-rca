@@ -1,3 +1,4 @@
+using ds_rca.bot;
 using ds_rca.config;
 using Google.Cloud.Firestore;
 
@@ -22,8 +23,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error initializing db: {e.Message}");
-            throw;
+            Bot.Log($"Error initializing db: {e.Message}");
         }
     }
 
@@ -35,7 +35,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error adding rca: {e.Message}");
+            Bot.Log($"Error adding rca: {e.Message}");
         }
     }
 
@@ -47,7 +47,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error deleting rca: {e.Message}");
+            Bot.Log($"Error deleting rca: {e.Message}");
         }
     }
 
@@ -59,7 +59,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error adding wishlister: {e.Message}");
+            Bot.Log($"Error adding wishlister: {e.Message}");
         }
     }
 
@@ -72,7 +72,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting wishlisters: {e.Message}");
+            Bot.Log($"Error getting wishlisters: {e.Message}");
         }
 
         return new List<ulong>();
@@ -86,7 +86,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error setting storefront id: {e.Message}");
+           Bot.Log($"Error setting storefront id: {e.Message}");
         }
     }
 
@@ -99,7 +99,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting storefront id: {e.Message}");
+            Bot.Log($"Error getting storefront id: {e.Message}");
         }
 
         return "";
@@ -113,7 +113,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error setting entity id: {e.Message}");
+            Bot.Log($"Error setting entity id: {e.Message}");
         }
     }
 
@@ -126,7 +126,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"error getting entity id: {e.Message}");
+            Bot.Log($"error getting entity id: {e.Message}");
         }
 
         return "";
@@ -140,7 +140,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error configuring server: {e.Message}");
+            Bot.Log($"Error configuring server: {e.Message}");
         }
     }
     
@@ -153,7 +153,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting server ids: {e.Message}");
+            Bot.Log($"Error getting server ids: {e.Message}");
         }
         
         return new List<(ulong Rca, ulong Contract, ulong Server)>();

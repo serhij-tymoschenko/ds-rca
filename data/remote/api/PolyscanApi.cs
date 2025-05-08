@@ -1,3 +1,4 @@
+using ds_rca.bot;
 using ds_rca.config;
 using ds_rca.data.remote.dto;
 using ds_rca.utils.constants;
@@ -53,7 +54,7 @@ public class PolyscanApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting entity ids: {e.Message}");
+            Bot.Log($"Error getting entity ids: {e.Message}");
         }
 
         return null;

@@ -110,13 +110,18 @@ public static class Bot
     {
         var userIdsToMention = new List<ulong>();
 
-        // if (type is MessageType.RCA)
-        // {
-        //     userIdsToMention = await Database
-        //         .GetUsersToNotifyAsync(rca.ShopUrl.Split("/").Last(), serverId);
-        // }
+        if (type is MessageType.RCA)
+        {
+            userIdsToMention = await Database
+                .GetUsersToNotifyAsync(rca.ShopUrl.Split("/").Last(), serverId);
+        }
 
         _messages.SendRcaDetailsAsync(channelId, rca, userIdsToMention, type);
+    }
+
+    public static async Task Log(string message)
+    {
+        _client.Rest.SendMessageAsync(Config.LOG_CHANNEL_ID, message);
     }
 
     public static async Task StartBotAsync()

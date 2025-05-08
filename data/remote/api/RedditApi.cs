@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using ds_rca.bot;
 using ds_rca.config;
 using ds_rca.utils.constants;
 
@@ -45,7 +46,7 @@ public class RedditApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Bot.Log($"Error getting storefront ids: {e.Message}");
         }
         
         return null;

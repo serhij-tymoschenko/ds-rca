@@ -69,7 +69,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                 {
                     token = await gqlApi.GetTokenAsync();
                 }
-                Console.WriteLine($"Error getting contracts: {e.Message}");
+                Bot.Log($"Error getting contracts: {e.Message}");
             }
             
             Thread.Sleep(2400);

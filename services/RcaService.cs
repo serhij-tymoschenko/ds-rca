@@ -59,7 +59,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 {
                     token = await gqlApi.GetTokenAsync();
                 }
-                Console.WriteLine($"Error getting rcas: {e.Message}");
+                Bot.Log($"Error getting rcas: {e.Message}");
             }
 
             Thread.Sleep(1200);

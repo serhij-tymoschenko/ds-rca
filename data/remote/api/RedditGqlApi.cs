@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using ds_rca.bot;
 using ds_rca.data.entities;
 using ds_rca.data.entities.mappers;
 using ds_rca.data.remote.dto;
@@ -43,7 +44,7 @@ public class RedditGqlApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting token: {e.Message}");
+            Bot.Log($"Error getting token: {e.Message}");
         }
 
         return null;
@@ -95,7 +96,7 @@ public class RedditGqlApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting storefront ids: {e.Message}");
+            Bot.Log($"Error getting storefront ids: {e.Message}");
         }
 
         return null;
@@ -143,7 +144,7 @@ public class RedditGqlApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting rcas: {e.Message}");
+            Bot.Log($"Error getting rcas: {e.Message}");
             if (e is HttpRequestException)
                 throw new AuthException();
         }
