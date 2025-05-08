@@ -72,8 +72,6 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
             {
                 Console.WriteLine($"Error getting contracts: {e.Message}");
             }
-
-            Thread.Sleep(Config.CONTRACT_SERVICE_SCAN_TIMEOUT_MIN * 60 * 1000);
         }
     }
 }

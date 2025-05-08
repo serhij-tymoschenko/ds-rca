@@ -68,8 +68,6 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             {
                 Console.WriteLine($"Error getting rcas: {e.Message}");
             }
-
-            Thread.Sleep(Config.RCA_SERVICE_SCAN_TIMEOUT_MIN * 60 * 1000);
         }
     }
 }

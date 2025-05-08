@@ -2,8 +2,6 @@ namespace ds_rca.config;
 
 public class Config
 {
-    public const int RCA_SERVICE_SCAN_TIMEOUT_MIN = 1;
-    public const int CONTRACT_SERVICE_SCAN_TIMEOUT_MIN = 5;
     public const int POLYSCAN_OFFSET = 40;
 
     public static string DS_API_KEY = Environment.GetEnvironmentVariable("DS_API_KEY");
