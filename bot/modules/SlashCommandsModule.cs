@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using ds_rca.data.db.firestore;
+using ds_rca.data.db;
 using ds_rca.utils.constants;
 using NetCord;
 using NetCord.Services.ApplicationCommands;
@@ -17,7 +17,7 @@ public class SlashCommandsModule : ApplicationCommandModule<ApplicationCommandCo
     {
         if (!Regex.IsMatch(storefrontId, ApiConstants.STOREFRONT)) return "Check command description";
 
-        Database.AddWishlister(storefrontId, Context.Guild.Id, Context.User.Id);
+        Database.AddUserToNotifyAsync(storefrontId, Context.Guild.Id, Context.User.Id);
         return "You will be notified";
     }
 

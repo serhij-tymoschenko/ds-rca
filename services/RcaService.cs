@@ -1,6 +1,6 @@
 using ds_rca.bot;
 using ds_rca.config;
-using ds_rca.data.db.firestore;
+using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 
@@ -14,7 +14,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
         {
             try
             {
-                var lastId = await Database.GetLastRcaId();
+                var lastId = await Database.GetLastStorefrontIdAsync();
                 var storefrontIds = await api.GetStorefrontIdsAsync();
 
 
@@ -49,11 +49,11 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                             {
                                 Bot.PostRcaAsync(rca, MessageType.RCA);
                                 var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
-                                Database.DeleteRca(storefrontId);
+                                Database.DeleteStorefrontAsync(storefrontId);
                             });
 
                             storefrontIds.Reverse();
-                            if (storefrontIds.Count > 0) Database.SetLastContractId(storefrontIds[0]);
+                            if (storefrontIds.Count > 0) Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                         }
                     }
                 }
@@ -61,7 +61,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 {
                     if (storefrontIds != null)
                         if (lastId != storefrontIds[0])
-                            await Database.SetLastContractId(storefrontIds[0]);
+                            await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                 }
             }
             catch (Exception e)

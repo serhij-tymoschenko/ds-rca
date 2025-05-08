@@ -1,6 +1,6 @@
 using ds_rca.bot;
 using ds_rca.config;
-using ds_rca.data.db.firestore;
+using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 
@@ -14,7 +14,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
         {
             try
             {
-                var lastId = await Database.GetLastContractId();
+                var lastId = await Database.GetLastEntityIdAsync();
                 var entityIds = await api.GetEntityIdsAsync();
 
                 if (lastId.Length > 0)
@@ -49,11 +49,11 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                             {
                                 Bot.PostRcaAsync(rca, MessageType.CONTRACT);
                                 var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
-                                Database.AddRca(storefrontId);
+                                Database.AddStorefrontAsync(storefrontId);
                             });
 
                             entityIds.Reverse();
-                            if (entityIds.Count > 0) Database.SetLastContractId(entityIds[0]);
+                            if (entityIds.Count > 0) Database.SetLastEntityIdAsync(entityIds[0]);
                         }
                     }
                 }
@@ -63,7 +63,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     {
                         if (lastId != entityIds[0])
                         {
-                            await Database.SetLastContractId(entityIds[0]);
+                            await Database.SetLastEntityIdAsync(entityIds[0]);
                         }
                     }
                 }

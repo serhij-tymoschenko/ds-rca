@@ -1,6 +1,6 @@
 using ds_rca.bot.modules;
 using ds_rca.config;
-using ds_rca.data.db.firestore;
+using ds_rca.data.db;
 using ds_rca.data.entities;
 using NetCord;
 using NetCord.Gateway;
@@ -39,6 +39,7 @@ public static class Bot
         catch (Exception e)
         {
             Console.WriteLine($"Error creating client instance: {e.Message}");
+            throw;
         }
     }
 
@@ -104,11 +105,15 @@ public static class Bot
 
         if (type is MessageType.RCA)
         {
-            var userStrIds = await Database
-                .GetWishlisters(rca.ShopUrl.Split("/").Last(), serverId);
-            userIdsToMention = userStrIds.ConvertAll(id => ulong.Parse(id));
+            var userIds = await Database
+                .GetUsersToNotifyAsync(rca.ShopUrl.Split("/").Last(), serverId);
         }
 
         _messages.SendRcaDetailsAsync(channelId, rca, userIdsToMention, type);
+    }
+
+    public static async Task StartBotAsync()
+    {
+        _client.StartAsync();
     }
 }

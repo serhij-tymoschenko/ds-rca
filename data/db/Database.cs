@@ -1,7 +1,7 @@
 using ds_rca.config;
 using Google.Cloud.Firestore;
 
-namespace ds_rca.data.db.firestore;
+namespace ds_rca.data.db;
 
 public class Database
 {
@@ -27,11 +27,11 @@ public class Database
         }
     }
 
-    public static async Task AddRca(string storefrontId)
+    public static async Task AddStorefrontAsync(string storefrontId)
     {
         try
         {
-            await _dbActions.AddRcaAsync(storefrontId);
+            await _dbActions.AddStorefrontAsync(storefrontId);
         }
         catch (Exception e)
         {
@@ -39,11 +39,11 @@ public class Database
         }
     }
 
-    public static async Task DeleteRca(string storefrontId)
+    public static async Task DeleteStorefrontAsync(string storefrontId)
     {
         try
         {
-            await _dbActions.DeleteRcaAsync(storefrontId);
+            await _dbActions.DeleteStorefrontAsync(storefrontId);
         }
         catch (Exception e)
         {
@@ -51,11 +51,11 @@ public class Database
         }
     }
 
-    public static async Task AddWishlister(string storefrontId, ulong serverId, ulong wishlisterId)
+    public static async Task AddUserToNotifyAsync(string storefrontId, ulong serverId, ulong wishlisterId)
     {
         try
         {
-            await _dbActions.AddWishlisterAsync(storefrontId, serverId, wishlisterId);
+            await _dbActions.AddUserToNotifyAsync(storefrontId, serverId, wishlisterId);
         }
         catch (Exception e)
         {
@@ -63,11 +63,11 @@ public class Database
         }
     }
 
-    public static async Task<List<string>> GetWishlisters(string storefrontId, ulong serverId)
+    public static async Task<List<ulong>> GetUsersToNotifyAsync(string storefrontId, ulong serverId)
     {
         try
         {
-            var wishlister = await _dbActions.GetWishlistersAsync(storefrontId, serverId);
+            var wishlister = await _dbActions.GetUsersToNotifyAsync(storefrontId, serverId);
             return wishlister;
         }
         catch (Exception e)
@@ -75,58 +75,58 @@ public class Database
             Console.WriteLine($"Error getting wishlisters: {e.Message}");
         }
 
-        return new List<string>();
+        return new List<ulong>();
     }
 
-    public static async Task SetLastRcaId(string id)
+    public static async Task SetLastStorefrontIdAsync(string id)
     {
         try
         {
-            await _dbActions.SetLastRcaIdAsync(id);
+            await _dbActions.SetLastStorefrontIdAsync(id);
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error setting last rca: {e.Message}");
+            Console.WriteLine($"Error setting storefront id: {e.Message}");
         }
     }
 
-    public static async Task<string> GetLastRcaId()
+    public static async Task<string> GetLastStorefrontIdAsync()
     {
         try
         {
-            var rcaId = await _dbActions.GetLastRcaIdAsync();
+            var rcaId = await _dbActions.GetLastStorefrontIdAsync();
             return rcaId;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting last rca: {e.Message}");
+            Console.WriteLine($"Error getting storefront id: {e.Message}");
         }
 
         return "";
     }
 
-    public static async Task SetLastContractId(string id)
+    public static async Task SetLastEntityIdAsync(string id)
     {
         try
         {
-            await _dbActions.SetLastContractIdAsync(id);
+            await _dbActions.SetLastEntityIdAsync(id);
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error setting last rca: {e.Message}");
+            Console.WriteLine($"Error setting entity id: {e.Message}");
         }
     }
 
-    public static async Task<string> GetLastContractId()
+    public static async Task<string> GetLastEntityIdAsync()
     {
         try
         {
-            var contractId = await _dbActions.GetLastContractIdAsync();
+            var contractId = await _dbActions.GetLastEntityIdAsync();
             return contractId;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"error getting last rca: {e.Message}");
+            Console.WriteLine($"error getting entity id: {e.Message}");
         }
 
         return "";
@@ -140,7 +140,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error seeding server config: {e.Message}");
+            Console.WriteLine($"Error configuring server: {e.Message}");
         }
     }
     
@@ -153,7 +153,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting server configs: {e.Message}");
+            Console.WriteLine($"Error getting server ids: {e.Message}");
         }
         
         return new List<(ulong Rca, ulong Contract, ulong Server)>();
