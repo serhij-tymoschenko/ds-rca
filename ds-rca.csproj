@@ -17,7 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="bot\modules\"/>
         <Folder Include="data\db\" />
     </ItemGroup>
 
