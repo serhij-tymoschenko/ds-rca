@@ -52,7 +52,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                             });
 
                             storefrontIds.Reverse();
-                            if (storefrontIds.Count > 0) await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
+                            if (rcas.Count > 0) await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                         }
                     }
                 }
