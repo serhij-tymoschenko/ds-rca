@@ -2,6 +2,7 @@ using ds_rca.bot;
 using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
+using ds_rca.utils;
 
 namespace ds_rca.services;
 
@@ -9,6 +10,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 {
     public async Task StartAsync()
     {
+        var token = await gqlApi.GetTokenAsync();
         var previousEntityIds = new List<string>();
         while (true)
         {
@@ -23,7 +25,6 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 
                 if (lastId.Length > 0)
                 {
-                    var token = await gqlApi.GetTokenAsync();
                     if (token == null) throw new Exception("Token not generated");
 
                     var isContainsLastId = entityIds.Contains(lastId);
@@ -64,6 +65,10 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
             }
             catch (Exception e)
             {
+                if (e is AuthException)
+                {
+                    token = await gqlApi.GetTokenAsync();
+                }
                 Console.WriteLine($"Error getting contracts: {e.Message}");
             }
             

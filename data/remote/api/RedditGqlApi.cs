@@ -3,6 +3,7 @@ using System.Text;
 using ds_rca.data.entities;
 using ds_rca.data.entities.mappers;
 using ds_rca.data.remote.dto;
+using ds_rca.utils;
 using ds_rca.utils.constants;
 using Newtonsoft.Json;
 
@@ -142,7 +143,9 @@ public class RedditGqlApi(HttpClient client)
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting rca: {e.Message}");
+            Console.WriteLine($"Error getting rcas: {e.Message}");
+            if (e is HttpRequestException)
+                throw new AuthException();
         }
 
         return null;
