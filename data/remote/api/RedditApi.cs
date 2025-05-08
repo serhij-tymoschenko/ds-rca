@@ -9,13 +9,14 @@ public class RedditApi(HttpClient client)
 {
     public async Task<List<string>?> GetStorefrontIdsAsync()
     {
-        var query = "shop-gallery-data-fetcher?" +
+        var query = "avatar/shop/category/" +
+                    "shop-gallery-data-fetcher?" +
                     "sort=RELEASE_TIME_REVERSE" +
                     "&categoryName=Recently+released";
         var reqMessage = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri(ApiConstants.REDDIT_SHREDDIT_ENDPOINT + query),
+            RequestUri = new Uri(ApiConstants.REDDIT_ENDPOINT + query),
             Headers =
             {
                 { "Accept", "text/vnd.reddit.partial+html, text/html;q=0.9" },
@@ -30,10 +31,9 @@ public class RedditApi(HttpClient client)
         try
         {
             var resMessage = await client.SendAsync(reqMessage);
-            Bot.Log(resMessage.StatusCode.ToString());
             resMessage.EnsureSuccessStatusCode();
             var resContent = await resMessage.Content.ReadAsStringAsync();
-            
+
             var storefrontIds = Regex
                 .Matches(resContent, ApiConstants.STOREFRONT)
                 .ToList()
@@ -41,16 +41,13 @@ public class RedditApi(HttpClient client)
                 .ToHashSet()
                 .ToList();
 
-            if (storefrontIds.Count > 0)
-            {
-                return storefrontIds;
-            }
+            if (storefrontIds.Count > 0) return storefrontIds;
         }
         catch (Exception e)
         {
             Bot.Log($"Error getting storefront ids: {e.Message}");
         }
-        
+
         return null;
     }
 }
