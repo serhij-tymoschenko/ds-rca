@@ -6,7 +6,7 @@ using ds_rca.data.remote.dto;
 using ds_rca.utils.constants;
 using Newtonsoft.Json;
 
-namespace ds_rca.data;
+namespace ds_rca.data.remote.api;
 
 public class RedditGqlApi(HttpClient client)
 {
