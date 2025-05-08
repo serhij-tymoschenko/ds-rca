@@ -53,7 +53,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                             });
 
                             entityIds.Reverse();
-                            if (entityIds.Count > 0) Database.SetLastEntityIdAsync(entityIds[0]);
+                            if (rcas.Count > 0) Database.SetLastEntityIdAsync(entityIds[0]);
                         }
                     }
                 }
