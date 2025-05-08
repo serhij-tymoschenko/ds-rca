@@ -73,6 +73,6 @@ public class MessagesModule(GatewayClient client)
             Embeds = new[] { embed }
         };
 
-        await client.Rest.SendMessageAsync(channelId, message);
+        client.Rest.SendMessageAsync(channelId, message);
     }
 }

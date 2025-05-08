@@ -16,8 +16,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             {
                 var lastId = await Database.GetLastStorefrontIdAsync();
                 var storefrontIds = await api.GetStorefrontIdsAsync();
-
-
+                
                 if (lastId.Length > 0)
                 {
                     if (storefrontIds != null)
@@ -68,6 +67,8 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             {
                 Console.WriteLine($"Error getting rcas: {e.Message}");
             }
+            
+            Thread.Sleep(5000);
         }
     }
 }
