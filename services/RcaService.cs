@@ -17,7 +17,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             {
                 var lastId = await Database.GetLastStorefrontIdAsync();
                 var storefrontIds = await api.GetStorefrontIdsAsync();
-                if (storefrontIds != null) throw new Exception("No storefrontIds fetched");
+                if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
 
                 if (lastId.Length > 0)
                 {
