@@ -81,15 +81,22 @@ public static class Bot
 
             while (await guilds.MoveNextAsync())
             {
-                var ids = channelIds.First(ids => ids.Server == guilds.Current.Id);
-                var channelId = 0UL;
+                try
+                {
+                    var ids = channelIds.First(ids => ids.Server == guilds.Current.Id);
+                    var channelId = 0UL;
 
-                if (type is MessageType.RCA)
-                    channelId = ids.Rca;
-                else
-                    channelId = ids.Contract;
+                    if (type is MessageType.RCA)
+                        channelId = ids.Rca;
+                    else
+                        channelId = ids.Contract;
 
-                PostRcaToGuildAsync(channelId, rca, type, guilds.Current.Id);
+                    PostRcaToGuildAsync(channelId, rca, type, guilds.Current.Id);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error sending message to server: {e.Message}");
+                }
             }
         }
         catch (Exception e)
