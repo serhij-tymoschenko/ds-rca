@@ -1,3 +1,4 @@
+using ds_rca.bot;
 using ds_rca.config;
 using ds_rca.data.db.firestore;
 using ds_rca.data.entities;
@@ -46,7 +47,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
 
                             rcas.ForEach(rca =>
                             {
-                                // Todo: bot message sending
+                                Bot.PostRcaAsync(rca, MessageType.RCA);
                                 var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
                                 Database.DeleteRca(storefrontId);
                             });
