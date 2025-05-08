@@ -107,8 +107,8 @@ public class DatabaseActions(FirestoreDb db)
 
         var data = new Dictionary<string, string>
         {
-            { "rca", rcaChannelId },
-            { "contract", contractChannelId }
+            { "rca_channel_id", rcaChannelId },
+            { "contract_channel_id", contractChannelId }
         };
 
         await docRef.SetAsync(data);
