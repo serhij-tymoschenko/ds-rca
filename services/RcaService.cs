@@ -59,6 +59,9 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 {
                     token = await gqlApi.GetTokenAsync();
                 }
+
+                if (e.Message == "No storefrontIds fetched")
+                    throw new Exception("GG");
                 Console.WriteLine($"Error getting rcas: {e.Message}");
             }
 
