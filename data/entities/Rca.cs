@@ -5,7 +5,7 @@ public struct Rca
     public required string Title { get; init; }
     public required string Description { get; init; }
     public required string AuthorName { get; init; }
-    public required string Count { get; init; }
+    public required int Count { get; init; }
     public required string Price { get; init; }
     public required string ShopUrl { get; init; }
     public required string ImageUrl { get; init; }
@@ -14,14 +14,14 @@ public struct Rca
 
 public struct RcaTraits
 {
-    public required string Face { get; init; }
-    public required string Eyes { get; init; }
-    public required string Tops { get; init; }
-    public required string Bottoms { get; init; }
-    public required string Background { get; init; }
-    public required string Hair { get; init; }
-    public required string HairBack { get; init; }
-    public required string Hats { get; init; }
-    public required string Left { get; init; }
-    public required string Right { get; init; }
+    public required string FaceUrl { get; init; }
+    public required string EyesUrl { get; init; }
+    public required string TopsUrl { get; init; }
+    public required string BottomsUrl { get; init; }
+    public required string BackgroundUrl { get; init; }
+    public required string? HairUrl { get; init; }
+    public required string? HairBackUrl { get; init; }
+    public required string? HatsUrl { get; init; }
+    public required string? LeftUrl { get; init; }
+    public required string? RightUrl { get; init; }
 }

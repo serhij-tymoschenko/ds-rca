@@ -1,5 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
+using ds_rca.data.entities;
+using ds_rca.data.entities.mappers;
 using ds_rca.data.remote.dto;
 using ds_rca.utils.constants;
 using Newtonsoft.Json;
@@ -77,7 +79,7 @@ public class RedditGqlApi(HttpClient client)
         {
             var resMessage = await client.SendAsync(reqMessage);
             resMessage.EnsureSuccessStatusCode();
-            
+
             var resContent = await resMessage.Content.ReadAsStringAsync();
             var nftsDetails = JsonConvert.DeserializeObject<InventoryItemsDto>(resContent);
             if (nftsDetails != null)
@@ -98,8 +100,8 @@ public class RedditGqlApi(HttpClient client)
         return null;
     }
 
-    public async Task GetNftDetailsAsync(string token,
-        string storefrontId = "storefront_nft_01JTB72P8YMD4K3A2XT9VH3SFP")
+    public async Task<Rca?> GetRcaAsync(string token,
+        string storefrontId)
     {
         var authHeader = new AuthenticationHeaderValue("Bearer", token);
 
@@ -131,12 +133,18 @@ public class RedditGqlApi(HttpClient client)
             var resMessage = await client.SendAsync(reqMessage);
             resMessage.EnsureSuccessStatusCode();
             var resContent = await resMessage.Content.ReadAsStringAsync();
-            Console.Write(resContent);
-            //var nftsDetails = JsonConvert.DeserializeObject<NftsDetailsDto>(resContent);
+            var avatarStorefront = JsonConvert.DeserializeObject<AvatarStorefrontDto>(resContent);
+            if (avatarStorefront != null)
+            {
+                var rca = avatarStorefront.ConvertToRca();
+                return rca;
+            }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error getting nft details: {e.Message}");
+            Console.WriteLine($"Error getting rca: {e.Message}");
         }
+
+        return null;
     }
 }
