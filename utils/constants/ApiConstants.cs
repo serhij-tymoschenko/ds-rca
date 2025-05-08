@@ -13,5 +13,5 @@ public class ApiConstants
     public const string USER_AGENT = "Reddit/Version 2023.21.0/Build 956283/Android 13";
     public const string CLIENT_ID = "ohXpoqrZYub1kg";
     
-    public const string STOREFRONT = @"strorefront_nft_";
+    public const string STOREFRONT = @"data-outfit-id=""(.*?)""";
 }
