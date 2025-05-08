@@ -105,7 +105,7 @@ public static class Bot
 
         if (type is MessageType.RCA)
         {
-            var userIds = await Database
+            userIdsToMention = await Database
                 .GetUsersToNotifyAsync(rca.ShopUrl.Split("/").Last(), serverId);
         }
 
