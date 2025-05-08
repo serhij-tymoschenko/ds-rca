@@ -5,7 +5,7 @@ using ds_rca.data.remote.api;
 
 namespace ds_rca.services;
 
-public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
+public class RcaService(RedditApi api, RedditGqlApi gqlApi)
 {
     public async Task StartAsync()
     {
@@ -13,28 +13,28 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
         {
             try
             {
-                var lastId = await Database.GetLastContractId();
-                var entityIds = await api.GetEntityIdsAsync();
+                var lastId = await Database.GetLastRcaId();
+                var storefrontIds = await api.GetStorefrontIdsAsync();
+
 
                 if (lastId.Length > 0)
                 {
-                    if (entityIds != null)
+                    if (storefrontIds != null)
                     {
                         var token = await gqlApi.GetTokenAsync();
 
                         if (token != null)
                         {
-                            var isContainsLastId = entityIds.Contains(lastId);
+                            var isContainsLastId = storefrontIds.Contains(lastId);
 
                             if (isContainsLastId)
                             {
-                                var lastIdIndex = entityIds.IndexOf(lastId);
-                                entityIds = entityIds.Slice(0, lastIdIndex);
+                                var lastIdIndex = storefrontIds.IndexOf(lastId);
+                                storefrontIds = storefrontIds.Slice(0, lastIdIndex);
                             }
 
-                            entityIds.Reverse();
+                            storefrontIds.Reverse();
 
-                            var storefrontIds = await gqlApi.GetStorefrontIdsAsync(token, entityIds);
                             var rcas = new List<Rca>();
 
                             foreach (var id in storefrontIds)
@@ -48,31 +48,27 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                             {
                                 // Todo: bot message sending
                                 var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
-                                Database.AddRca(storefrontId);
+                                Database.DeleteRca(storefrontId);
                             });
 
-                            entityIds.Reverse();
-                            if (entityIds.Count > 0) Database.SetLastContractId(entityIds[0]);
+                            storefrontIds.Reverse();
+                            if (storefrontIds.Count > 0) Database.SetLastContractId(storefrontIds[0]);
                         }
                     }
                 }
                 else
                 {
-                    if (entityIds != null)
-                    {
-                        if (lastId != entityIds[0])
-                        {
-                            await Database.SetLastContractId(entityIds[0]);
-                        }
-                    }
+                    if (storefrontIds != null)
+                        if (lastId != storefrontIds[0])
+                            await Database.SetLastContractId(storefrontIds[0]);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error getting contracts: {e.Message}");
+                Console.WriteLine($"Error getting rcas: {e.Message}");
             }
 
-            Thread.Sleep(Config.CONTRACT_SERVICE_SCAN_TIMEOUT_MIN * 60 * 1000);
+            Thread.Sleep(Config.RCA_SERVICE_SCAN_TIMEOUT_MIN * 60 * 1000);
         }
     }
 }
