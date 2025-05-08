@@ -2,6 +2,8 @@ namespace ds_rca.utils.constants;
 
 public class RegexConstants
 {
+    public const string STOREFRONT = @"data-outfit-id=""(.*?)""";
+    
     public const string STOREFRONT_REGEX = "storefront_nft_[A-Za-z0-9]{26}$";
     public const string TITLE_REGEX = "nft-title=\"([^\"]+)\"";
     public const string DESCRIPTION_REGEX = "nft-description=\"([^\"]+)\"";

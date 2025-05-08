@@ -5,7 +5,7 @@ using ds_rca.data.remote.api;
 
 namespace ds_rca.services;
 
-public class ContractService(HttpClient client, PolyscanApi api, RedditGqlApi gqlApi)
+public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 {
     public async Task StartAsync()
     {
