@@ -15,7 +15,7 @@ public class SlashCommandsModule : ApplicationCommandModule<ApplicationCommandCo
         string storefrontId
     )
     {
-        if (!Regex.IsMatch(storefrontId, ApiConstants.STOREFRONT)) return "Check command description";
+        if (!storefrontId.StartsWith("storefront_nft_")) return "Check command description";
 
         Database.AddUserToNotifyAsync(storefrontId, Context.Guild.Id, Context.User.Id);
         return "You will be notified";

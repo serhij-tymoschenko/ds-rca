@@ -9,5 +9,5 @@ public class AccessoriesRegex
     public static string Face = "face_lower_([^_]+)$";
     public static string Eyes = "face_upper_([^_]+)$";
     public static string Hats = "head_accessory_([^_]+)$";
-    public static string Hair = "hair_([^_]+)(?:_([^_]+))?";
+    public static string Hair = "hair_([^_]{11})(?:_([^_]{11}))?";
 }
