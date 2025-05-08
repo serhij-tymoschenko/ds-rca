@@ -8,7 +8,7 @@ public class Database
     private static FirestoreDb? _db;
     private static DatabaseActions? _dbActions;
 
-    public static void InitDb()
+    public static void CreateInstance()
     {
         try
         {
