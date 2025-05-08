@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using ds_rca.bot;
 using ds_rca.config;
 using ds_rca.utils.constants;
+using Microsoft.Extensions.Logging;
 
 namespace ds_rca.data.remote.api;
 
@@ -40,7 +41,7 @@ public class RedditApi(HttpClient client)
                 .ConvertAll(match => match.Groups[1].Value)
                 .ToHashSet()
                 .ToList();
-
+            
             if (storefrontIds.Count > 0) return storefrontIds;
         }
         catch (Exception e)
