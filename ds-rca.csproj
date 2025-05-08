@@ -10,14 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Google.Cloud.Firestore" Version="3.10.0" />
-      <PackageReference Include="NetCord" Version="1.0.0-alpha.365" />
-      <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.365" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Google.Cloud.Firestore" Version="3.10.0"/>
+        <PackageReference Include="NetCord" Version="1.0.0-alpha.365"/>
+        <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.365"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="bot\modules\" />
+        <Folder Include="bot\modules\"/>
     </ItemGroup>
 
 </Project>

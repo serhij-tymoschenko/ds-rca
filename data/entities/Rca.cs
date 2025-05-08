@@ -1,6 +1,6 @@
 namespace ds_rca.data.entities;
 
-public class Rca
+public struct Rca
 {
     public required string Title { get; init; }
     public required string Description { get; init; }
@@ -12,7 +12,7 @@ public class Rca
     public required RcaTraits Traits { get; set; }
 }
 
-public class RcaTraits
+public struct RcaTraits
 {
     public required string Face { get; init; }
     public required string Eyes { get; init; }
