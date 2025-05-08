@@ -68,7 +68,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 Console.WriteLine($"Error getting rcas: {e.Message}");
             }
             
-            Thread.Sleep(5000);
+            Thread.Sleep(2500);
         }
     }
 }
