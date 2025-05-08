@@ -77,7 +77,7 @@ public class DatabaseActions(FirestoreDb db)
     public async Task AddUserToNotifyAsync(string storefrontId, ulong serverId, ulong userId)
     {
         var docRef = db
-            .Collection("rca")
+            .Collection("storefronts")
             .Document(storefrontId)
             .Collection(serverId.ToString())
             .Document(userId.ToString());
@@ -87,7 +87,7 @@ public class DatabaseActions(FirestoreDb db)
     public async Task<List<ulong>> GetUsersToNotifyAsync(string storefrontId, ulong serverId)
     {
         IAsyncEnumerable<DocumentReference> docRef = db
-            .Collection("rca")
+            .Collection("storefronts")
             .Document(storefrontId)
             .Collection(serverId.ToString())
             .ListDocumentsAsync();
