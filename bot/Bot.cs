@@ -81,7 +81,7 @@ public static class Bot
 
             while (await guilds.MoveNextAsync())
             {
-                var ids = channelIds.FirstOrDefault(ids => ids.Server == guilds.Current.Id);
+                var ids = channelIds.First(ids => ids.Server == guilds.Current.Id);
                 var channelId = 0UL;
 
                 if (type is MessageType.RCA)
