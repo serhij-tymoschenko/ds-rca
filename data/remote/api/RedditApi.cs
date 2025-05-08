@@ -32,7 +32,7 @@ public class RedditApi(HttpClient client)
             var resContent = await resMessage.Content.ReadAsStringAsync();
 
             var storefrontIds = Regex
-                .Matches(resContent, RegexConstants.STOREFRONT)
+                .Matches(resContent, ApiConstants.STOREFRONT)
                 .ToList()
                 .ConvertAll(match => match.Groups[1].Value)
                 .ToHashSet()
