@@ -10,11 +10,10 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 {
     public async Task StartAsync()
     {
-        var previousRcaIds = new List<String>();
+        var previousRcaIds = new List<string>();
         
         while (true)
         {
-            
             try
             {
                 var lastId = await Database.GetLastEntityIdAsync();
@@ -45,6 +44,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                             foreach (var id in storefrontIds)
                             {
                                 var rca = await gqlApi.GetRcaAsync(token, id);
+                                previousRcaIds = new List<string>();
                                 if (rca == null)
                                 {
                                     previousRcaIds.Add(id);
@@ -80,6 +80,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
             {
                 Console.WriteLine($"Error getting contracts: {e.Message}");
             }
+            
         }
     }
 }
