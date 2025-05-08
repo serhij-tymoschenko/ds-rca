@@ -136,7 +136,7 @@ public class Database
     {
         try
         {
-            await _dbActions.SetServerConfigAsync(serverId, rcaChannelId, contractChannelId);
+            await _dbActions.ConfigAsync(serverId, rcaChannelId, contractChannelId);
         }
         catch (Exception e)
         {

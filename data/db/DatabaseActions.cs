@@ -1,10 +1,10 @@
 using Google.Cloud.Firestore;
 
-namespace ds_rca.data.db.firestore;
+namespace ds_rca.data.db;
 
 public class DatabaseActions(FirestoreDb db)
 {
-    public async Task SetLastRcaIdAsync(string id)
+    public async Task SetLastStorefrontIdAsync(string id)
     {
         var docRef = db
             .Collection("config")
@@ -12,13 +12,13 @@ public class DatabaseActions(FirestoreDb db)
 
         var data = new Dictionary<string, string>
         {
-            { "last", id }
+            { "last_storefront_id", id }
         };
 
         await docRef.SetAsync(data);
     }
 
-    public async Task<string> GetLastRcaIdAsync()
+    public async Task<string> GetLastStorefrontIdAsync()
     {
         var docRef = db
             .Collection("config")
@@ -27,11 +27,11 @@ public class DatabaseActions(FirestoreDb db)
         var snapshot = await docRef.GetSnapshotAsync();
 
         string? value;
-        snapshot.TryGetValue<string>("last", out value);
+        snapshot.TryGetValue<string>("last_storefront_id", out value);
         return value ?? "";
     }
 
-    public async Task SetLastContractIdAsync(string id)
+    public async Task SetLastEntityIdAsync(string id)
     {
         var docRef = db
             .Collection("config")
@@ -39,13 +39,13 @@ public class DatabaseActions(FirestoreDb db)
 
         var data = new Dictionary<string, string>
         {
-            { "last", id }
+            { "last_entity_id", id }
         };
 
         await docRef.SetAsync(data);
     }
 
-    public async Task<string> GetLastContractIdAsync()
+    public async Task<string> GetLastEntityIdAsync()
     {
         var docRef = db
             .Collection("config")
@@ -54,37 +54,37 @@ public class DatabaseActions(FirestoreDb db)
         var snapshot = await docRef.GetSnapshotAsync();
 
         string? value;
-        snapshot.TryGetValue<string>("last", out value);
+        snapshot.TryGetValue<string>("last_entity_id", out value);
         return value ?? "";
     }
 
-    public async Task AddRcaAsync(string storefrontId)
+    public async Task AddStorefrontAsync(string storefrontId)
     {
         var docRef = db
-            .Collection("rca")
+            .Collection("storefronts")
             .Document(storefrontId);
         await docRef.SetAsync(new { });
     }
 
-    public async Task DeleteRcaAsync(string storefrontId)
+    public async Task DeleteStorefrontAsync(string storefrontId)
     {
         var docRef = db
-            .Collection("rca")
+            .Collection("storefronts")
             .Document(storefrontId);
         await docRef.DeleteAsync();
     }
 
-    public async Task AddWishlisterAsync(string storefrontId, ulong serverId, ulong wishlisterId)
+    public async Task AddUserToNotifyAsync(string storefrontId, ulong serverId, ulong userId)
     {
         var docRef = db
             .Collection("rca")
             .Document(storefrontId)
             .Collection(serverId.ToString())
-            .Document(wishlisterId.ToString());
+            .Document(userId.ToString());
         await docRef.SetAsync(new { });
     }
 
-    public async Task<List<string>> GetWishlistersAsync(string storefrontId, ulong serverId)
+    public async Task<List<ulong>> GetUsersToNotifyAsync(string storefrontId, ulong serverId)
     {
         IAsyncEnumerable<DocumentReference> docRef = db
             .Collection("rca")
@@ -92,14 +92,14 @@ public class DatabaseActions(FirestoreDb db)
             .Collection(serverId.ToString())
             .ListDocumentsAsync();
 
-        var wishlisterRefs = docRef.GetAsyncEnumerator();
-        var wishlisterIds = new List<string>();
-        while (await wishlisterRefs.MoveNextAsync()) wishlisterIds.Add(wishlisterRefs.Current.Id);
+        var userRefs = docRef.GetAsyncEnumerator();
+        var userIds = new List<ulong>();
+        while (await userRefs.MoveNextAsync()) userIds.Add(UInt64.Parse(userRefs.Current.Id));
 
-        return wishlisterIds;
+        return userIds;
     }
 
-    public async Task SetServerConfigAsync(ulong serverId, string rcaChannelId, string contractChannelId)
+    public async Task ConfigAsync(ulong serverId, string rcaChannelId, string contractChannelId)
     {
         var docRef = db
             .Collection("servers")
@@ -121,17 +121,17 @@ public class DatabaseActions(FirestoreDb db)
             .ListDocumentsAsync();
 
         var docsRefs = docRef.GetAsyncEnumerator();
-        var idsList = new List<(ulong Rca, ulong Contract, ulong Server)>();
+        var ids = new List<(ulong Rca, ulong Contract, ulong Server)>();
 
         while (await docsRefs.MoveNextAsync())
         {
             var snapshot = await docsRefs.Current.GetSnapshotAsync();
-            var rcaId = snapshot.GetValue<string>("rca");
-            var contractId = snapshot.GetValue<string>("contract");
+            var rcaId = snapshot.GetValue<string>("rca_channel_id");
+            var contractId = snapshot.GetValue<string>("contract_channel_id");
 
-            idsList.Add((ulong.Parse(rcaId), ulong.Parse(contractId), ulong.Parse(docsRefs.Current.Id)));
+            ids.Add((ulong.Parse(rcaId), ulong.Parse(contractId), ulong.Parse(docsRefs.Current.Id)));
         }
 
-        return idsList;
+        return ids;
     }
 }
