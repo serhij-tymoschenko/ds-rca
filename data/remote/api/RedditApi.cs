@@ -9,7 +9,7 @@ public class RedditApi(HttpClient client)
 {
     public async Task<List<string>?> GetStorefrontIdsAsync()
     {
-        var query = "avatar/shop/category/" +
+        var query = "/avatar/shop/category/" +
                     "shop-gallery-data-fetcher?" +
                     "sort=RELEASE_TIME_REVERSE" +
                     "&categoryName=Recently+released";
