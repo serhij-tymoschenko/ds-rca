@@ -12,6 +12,8 @@ public class RedditApi(HttpClient client)
         var query = "/svc/shreddit/" +
                     "shop-gallery-data-fetcher?" +
                     "sort=RELEASE_TIME_REVERSE" +
+                    "&releasedWithinDays=30" +
+                    "&lastEnd=cmVsZWFzZWRfYXQ9fGxpc3RpbmdfaWQ9" +
                     "&categoryName=Recently+released" +
                     "&galleryType=CATEGORY_DETAILS";
         var reqMessage = new HttpRequestMessage
