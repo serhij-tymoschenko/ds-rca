@@ -29,85 +29,37 @@ public class Database
             Bot.Log($"Error initializing db: {e.Message}");
         }
     }
-    
+
     public static async Task SetLastStorefrontIdAsync(string id)
     {
-        try
-        {
-            await _dataModule.SetLastStorefrontIdAsync(id);
-        }
-        catch (Exception e)
-        {
-           Bot.Log($"Error setting storefront id: {e.Message}");
-        }
+        _dataModule.SetLastStorefrontIdAsync(id);
     }
 
     public static async Task<string> GetLastStorefrontIdAsync()
     {
-        try
-        {
-            var rcaId = await _dataModule.GetLastStorefrontIdAsync();
-            return rcaId;
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error getting storefront id: {e.Message}");
-        }
-
-        return "";
+        var rcaId = await _dataModule.GetLastStorefrontIdAsync();
+        return rcaId;
     }
 
     public static async Task SetLastEntityIdAsync(string id)
     {
-        try
-        {
-            await _dataModule.SetLastEntityIdAsync(id);
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error setting entity id: {e.Message}");
-        }
+        _dataModule.SetLastEntityIdAsync(id);
     }
 
     public static async Task<string> GetLastEntityIdAsync()
     {
-        try
-        {
-            var contractId = await _dataModule.GetLastEntityIdAsync();
-            return contractId;
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"error getting entity id: {e.Message}");
-        }
-
-        return "";
+        var contractId = await _dataModule.GetLastEntityIdAsync();
+        return contractId;
     }
 
     public static async Task SetServerConfigAsync(ulong serverId, string rcaChannelId, string contractChannelId)
     {
-        try
-        {
-            await _configModule.ConfigAsync(serverId, rcaChannelId, contractChannelId);
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error configuring server: {e.Message}");
-        }
+        _configModule.ConfigAsync(serverId, rcaChannelId, contractChannelId);
     }
-    
+
     public static async Task<List<(ulong Rca, ulong Contract, ulong Server)>> GetServerConfigsAsync()
     {
-        try
-        {
-            var idsList = await _configModule.GetServerConfigsAsync();
-            return idsList;
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error getting server ids: {e.Message}");
-        }
-        
-        return new List<(ulong Rca, ulong Contract, ulong Server)>();
+        var idsList = await _configModule.GetServerConfigsAsync();
+        return idsList;
     }
 }

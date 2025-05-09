@@ -65,17 +65,24 @@ public class MessagesModule(GatewayClient client)
 
     public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
     {
-        var content = BuildMessage(rca, type);
-        var embed = new EmbedProperties
+        try
         {
-            Image = new EmbedImageProperties(rca.ImageUrl)
-        };
-        var message = new MessageProperties
-        {
-            Content = content,
-            Embeds = new[] { embed }
-        };
+            var content = BuildMessage(rca, type);
+            var embed = new EmbedProperties
+            {
+                Image = new EmbedImageProperties(rca.ImageUrl)
+            };
+            var message = new MessageProperties
+            {
+                Content = content,
+                Embeds = new[] { embed }
+            };
 
-        client.Rest.SendMessageAsync(channelId, message);
+            await client.Rest.SendMessageAsync(channelId, message);
+        }
+        catch (Exception e)
+        {
+            Bot.Log($"Error sending RCA details: {e.Message}");
+        }
     }
 }
