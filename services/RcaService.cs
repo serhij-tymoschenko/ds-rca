@@ -16,8 +16,11 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
         {
             try
             {
+                Bot.Log(DateTime.Now.ToString());
                 var lastId = await Database.GetLastStorefrontIdAsync();
+                Bot.Log(DateTime.Now.ToString());
                 var storefrontIds = await api.GetStorefrontIdsAsync();
+                Bot.Log(DateTime.Now.ToString());
                 if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
 
                 if (lastId.Length > 0)
@@ -33,6 +36,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                             localStorefrontIds.Add(storefrontIds[i]);
                         }
                     }
+                    Bot.Log(DateTime.Now.ToString());
                     
                     
                     localStorefrontIds.Reverse();
@@ -42,17 +46,19 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                         var rca = await gqlApi.GetRcaAsync(token, id);
                         if (rca != null) rcas.Add((Rca)rca);
                     }
+                    Bot.Log(DateTime.Now.ToString());
 
                     rcas.ForEach(rca =>
                     {
                         Bot.PostRcaAsync(rca, MessageType.RCA);
                     });
-
+                    Bot.Log(DateTime.Now.ToString());
                     
                     if (localStorefrontIds.Count > 0)
                     {
                         Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
                     }
+                    Bot.Log(DateTime.Now.ToString());
                 }
                 else if (lastId != storefrontIds[0])
                 {
