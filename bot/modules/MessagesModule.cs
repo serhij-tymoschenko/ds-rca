@@ -21,11 +21,14 @@ public class MessagesModule(GatewayClient client)
         message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
         rca.Description.Split('\n').ToList().ForEach(x => message += $"> {x}\n");
         
+        message += "\n";
+        
         message += "**Additional info:**\n";
         message += $"Price: {rca.Price.FormatToPrice()} •" +
                    $" Amount: {rca.Count} •" +
                    $" Author: [{rca.AuthorName}]({rca.AuthorShopUrl})\n";
         
+        message += "\n";
         
         message += "**Avatar traits:**\n";
         message += $"[face]({rca.Traits.FaceUrl}) •" +
@@ -47,7 +50,7 @@ public class MessagesModule(GatewayClient client)
 
         if (rca.Traits.RightUrl != null) nextLineOfTrait.Add($"[right]({rca.Traits.RightUrl})");
 
-        return message + String.Join(" • ", nextLineOfTrait.ToArray());
+        return message + String.Join(" • ", nextLineOfTrait.ToArray() + "\n");
     }
 
     public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
