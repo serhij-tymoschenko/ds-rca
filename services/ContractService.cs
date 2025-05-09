@@ -45,7 +45,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     {
                         Bot.PostRcaAsync(rca, MessageType.CONTRACT);
                     });
-                   
+                    
                     if (entityIds.Count > 0)
                     {
                         entityIds.Reverse();

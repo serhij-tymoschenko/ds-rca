@@ -3,6 +3,7 @@ using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 using ds_rca.utils;
+using Microsoft.Extensions.Logging;
 
 namespace ds_rca.services;
 
@@ -45,8 +46,9 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                     
                     if (storefrontIds.Count > 0)
                     {
+                        Bot.Log("GG");
                         storefrontIds.Reverse();
-                        await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
+                        Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                     }
                 }
                 else if (lastId != storefrontIds[0])
