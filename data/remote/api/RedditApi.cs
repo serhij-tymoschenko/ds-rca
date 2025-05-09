@@ -13,6 +13,7 @@ public class RedditApi(HttpClient client)
                     "shop-gallery-data-fetcher?" +
                     "sort=RELEASE_TIME_REVERSE" +
                     "&releasedWithinDays=30" +
+                    "&status=AVAILABLE" +
                     "&lastEnd=cmVsZWFzZWRfYXQ9fGxpc3RpbmdfaWQ9" +
                     "&categoryName=Recently+released" +
                     "&galleryType=CATEGORY_DETAILS";
