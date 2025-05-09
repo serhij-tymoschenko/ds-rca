@@ -38,17 +38,14 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                         var rca = await gqlApi.GetRcaAsync(token, id);
                         if (rca != null) rcas.Add((Rca)rca);
                     }
-                    
-                    rcas.ForEach(rca =>
-                    {
-                        Bot.PostRcaAsync(rca, MessageType.RCA);
-                    });
-                    
+
+                    rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.RCA); });
+
                     if (storefrontIds.Count > 0)
                     {
-                        Bot.Log("GG");
                         storefrontIds.Reverse();
-                        Database.SetLastStorefrontIdAsync(storefrontIds[0]);
+                        Bot.Log(storefrontIds[0]);
+                        await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                     }
                 }
                 else if (lastId != storefrontIds[0])
@@ -58,10 +55,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             }
             catch (Exception e)
             {
-                if (e is AuthException)
-                {
-                    token = await gqlApi.GetTokenAsync();
-                }
+                if (e is AuthException) token = await gqlApi.GetTokenAsync();
                 Bot.Log($"Error getting rcas: {e.Message}");
             }
 

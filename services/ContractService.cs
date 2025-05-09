@@ -33,40 +33,33 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     entityIds.Reverse();
                     var storefrontIds = await gqlApi.GetStorefrontIdsAsync(token, entityIds);
                     if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
-                    
+
                     var rcas = new List<Rca>();
-                    foreach (var idIndexed in storefrontIds.Select((id, index) => new {id, index}))
+                    foreach (var idIndexed in storefrontIds.Select((id, index) => new { id, index }))
                     {
                         var rca = await gqlApi.GetRcaAsync(token, idIndexed.id);
                         if (rca != null) rcas.Add((Rca)rca);
                     }
-                    
-                    rcas.ForEach(rca =>
-                    {
-                        Bot.PostRcaAsync(rca, MessageType.CONTRACT);
-                    });
-                    
+
+                    rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.CONTRACT); });
+
                     if (entityIds.Count > 0)
                     {
                         entityIds.Reverse();
-                        Database.SetLastEntityIdAsync(entityIds[0]);
+                        await Database.SetLastEntityIdAsync(entityIds[0]);
                     }
                 }
                 else if (lastId != entityIds[0])
                 {
                     await Database.SetLastEntityIdAsync(entityIds[0]);
                 }
-
             }
             catch (Exception e)
             {
-                if (e is AuthException)
-                {
-                    token = await gqlApi.GetTokenAsync();
-                }
+                if (e is AuthException) token = await gqlApi.GetTokenAsync();
                 Bot.Log($"Error getting contracts: {e.Message}");
             }
-            
+
             Thread.Sleep(15 * 1000 * 60);
         }
     }
