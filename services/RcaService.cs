@@ -3,6 +3,7 @@ using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 using ds_rca.utils;
+using Microsoft.Extensions.Logging;
 
 namespace ds_rca.services;
 
@@ -15,8 +16,11 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
         {
             try
             {
+                Bot.Log("Rca service started");
                 var lastId = await Database.GetLastStorefrontIdAsync();
+                Bot.Log(lastId);
                 var storefrontIds = await api.GetStorefrontIdsAsync();
+                Bot.Log(storefrontIds.Count.ToString());
                 if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
 
                 if (lastId.Length > 0)
