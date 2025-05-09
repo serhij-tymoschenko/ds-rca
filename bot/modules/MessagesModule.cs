@@ -9,12 +9,12 @@ public class MessagesModule(GatewayClient client)
 {
     private string BuildMessage(Rca rca, MessageType type)
     {
-        var message = "\n";
+        var message = "";
 
         if (type is MessageType.RCA)
-            message += $"**New rca! • New rca! • New rca! • New rca! • New rca!**\n";
+            message += $"**New rca!**\n";
         else
-            message += $"**New contract! • New contract! • New contract! • New contract! • New contract!**\n";
+            message += $"**New contract!**\n";
 
         message += "\n";
         
@@ -40,6 +40,7 @@ public class MessagesModule(GatewayClient client)
         message += "\n";
 
         var nextLineOfTrait = new List<String>();
+        
         if (rca.Traits.HairUrl != null) nextLineOfTrait.Add($"[hair]({rca.Traits.HairUrl})");
 
         if (rca.Traits.HairBackUrl != null) nextLineOfTrait.Add($"[hair_back]({rca.Traits.HairBackUrl}) •");
@@ -50,7 +51,12 @@ public class MessagesModule(GatewayClient client)
 
         if (rca.Traits.RightUrl != null) nextLineOfTrait.Add($"[right]({rca.Traits.RightUrl})");
 
-        return message + String.Join(" • ", nextLineOfTrait.ToArray() + "\n");
+        if (nextLineOfTrait.Count > 0)
+        {
+            message += String.Join(" • ", nextLineOfTrait.ToArray());
+        }
+        
+        return message + "\n";
     }
 
     public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
