@@ -45,9 +45,12 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     {
                         Bot.PostRcaAsync(rca, MessageType.CONTRACT);
                     });
-
-                    entityIds.Reverse();
-                    if (entityIds.Count > 0) Database.SetLastEntityIdAsync(entityIds[0]);
+                   
+                    if (entityIds.Count > 0)
+                    {
+                        entityIds.Reverse();
+                        Database.SetLastEntityIdAsync(entityIds[0]);
+                    }
                 }
                 else if (lastId != entityIds[0])
                 {
