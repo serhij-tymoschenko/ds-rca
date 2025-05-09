@@ -12,9 +12,9 @@ public class MessagesModule(GatewayClient client)
         var message = "\n";
 
         if (type is MessageType.RCA)
-            message += $"**New rca:**\n";
+            message += $"**••••••••••New rca:**\n";
         else
-            message += $"**New contract:**\n";
+            message += $"**••••••••••New contract:**\n";
         
         message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
         rca.Description.Split('\n').ToList().ForEach(x => message += $"> {x}\n");
@@ -35,17 +35,18 @@ public class MessagesModule(GatewayClient client)
 
         message += "\n";
 
-        if (rca.Traits.HairUrl != null) message += $"[hair]({rca.Traits.HairUrl}) •";
+        var nextLineOfTrait = "";
+        if (rca.Traits.HairUrl != null) nextLineOfTrait += $"[hair]({rca.Traits.HairUrl}) •";
 
-        if (rca.Traits.HairBackUrl != null) message += $" [hair_back]({rca.Traits.HairBackUrl}) •";
+        if (rca.Traits.HairBackUrl != null) nextLineOfTrait += $" [hair_back]({rca.Traits.HairBackUrl}) •";
 
-        if (rca.Traits.HatsUrl != null) message += $" [hats]({rca.Traits.HatsUrl}) •";
+        if (rca.Traits.HatsUrl != null) nextLineOfTrait += $" [hats]({rca.Traits.HatsUrl}) •";
 
-        if (rca.Traits.LeftUrl != null) message += $" [left]({rca.Traits.LeftUrl}) •";
+        if (rca.Traits.LeftUrl != null) nextLineOfTrait += $" [left]({rca.Traits.LeftUrl}) •";
 
-        if (rca.Traits.RightUrl != null) message += $" [right]({rca.Traits.RightUrl})";
+        if (rca.Traits.RightUrl != null) nextLineOfTrait += $" [right]({rca.Traits.RightUrl})";
 
-        return message;
+        return message + nextLineOfTrait.Trim();
     }
 
     public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
