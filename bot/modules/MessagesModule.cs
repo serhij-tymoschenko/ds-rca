@@ -56,7 +56,11 @@ public class MessagesModule(GatewayClient client)
             message += String.Join(" • ", nextLineOfTrait.ToArray());
         }
         
-        return message + "\n";
+        message += "\n";
+        
+        message += "**Avatar traits:**";
+        
+        return message;
     }
 
     public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
