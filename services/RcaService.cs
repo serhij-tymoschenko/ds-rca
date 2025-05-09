@@ -42,7 +42,10 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                         if (rca != null) rcas.Add((Rca)rca);
                     }
 
-                    rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.RCA); });
+                    rcas.ForEach(rca =>
+                    {
+                        Bot.PostRcaAsync(rca, MessageType.RCA);
+                    });
 
                     
                     if (localStorefrontIds.Count > 0)

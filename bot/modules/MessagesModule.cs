@@ -15,10 +15,8 @@ public class MessagesModule(GatewayClient client)
             message += $"**New rca:**\n";
         else
             message += $"**New contract:**\n";
-
-        message += "\n";
         
-        message += $"**[{rca.Title}]({rca.ShopUrl}**\n";
+        message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
         message += $"> {rca.Description}\n";
 
         message += "\n";
@@ -26,7 +24,7 @@ public class MessagesModule(GatewayClient client)
         message += "**Additional info:**\n";
         message += $"Price: {rca.Price.FormatToPrice()} •" +
                    $" Amount: {rca.Count} •" +
-                   $" Author: [{rca.AuthorName}]({rca.AuthorShopUrl})\n]";
+                   $" Author: [{rca.AuthorName}]({rca.AuthorShopUrl})\n";
 
         message += "\n";
         
