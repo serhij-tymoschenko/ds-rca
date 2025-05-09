@@ -2,7 +2,6 @@ using System.Text.RegularExpressions;
 using ds_rca.bot;
 using ds_rca.config;
 using ds_rca.utils.constants;
-using Microsoft.Extensions.Logging;
 
 namespace ds_rca.data.remote.api;
 
@@ -34,12 +33,11 @@ public class RedditApi(HttpClient client)
             var resMessage = await client.SendAsync(reqMessage);
             resMessage.EnsureSuccessStatusCode();
             var resContent = await resMessage.Content.ReadAsStringAsync();
-            Bot.Log(resContent);
             
             var storefrontIds = Regex
                 .Matches(resContent, ApiConstants.STOREFRONT)
                 .ToList()
-                .ConvertAll(match => match.Groups[1].Value)
+                .ConvertAll(match => match.Value)
                 .ToHashSet()
                 .ToList();
             
