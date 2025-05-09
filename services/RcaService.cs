@@ -41,11 +41,10 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
 
                     rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.RCA); });
 
+                    
                     if (storefrontIds.Count > 0)
                     {
-                        storefrontIds.Reverse();
-                        Bot.Log(storefrontIds[0]);
-                        await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
+                        await Database.SetLastStorefrontIdAsync(storefrontIds[^1]);
                     }
                 }
                 else if (lastId != storefrontIds[0])
