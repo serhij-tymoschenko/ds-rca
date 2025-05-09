@@ -53,10 +53,8 @@ public class MessagesModule(GatewayClient client)
 
         if (nextLineOfTrait.Count > 0)
         {
-            message += String.Join(" • ", nextLineOfTrait.ToArray());
+            message += String.Join(" • ", nextLineOfTrait.ToArray()) + "\n";
         }
-        
-        message += "\n";
         
         message += "\n";
         
