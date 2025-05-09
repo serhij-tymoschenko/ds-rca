@@ -15,8 +15,7 @@ public class RedditApi(HttpClient client)
                     "&releasedWithinDays=30" +
                     "&status=AVAILABLE" +
                     "&lastEnd=cmVsZWFzZWRfYXQ9fGxpc3RpbmdfaWQ9";
-                    //"&categoryName=Recently+released" +
-                    //"&galleryType=CATEGORY_DETAILS";
+        
         var reqMessage = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
