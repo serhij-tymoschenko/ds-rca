@@ -43,7 +43,7 @@ public class MessagesModule(GatewayClient client)
         
         if (rca.Traits.HairUrl != null) nextLineOfTrait.Add($"[hair]({rca.Traits.HairUrl})");
 
-        if (rca.Traits.HairBackUrl != null) nextLineOfTrait.Add($"[hair_back]({rca.Traits.HairBackUrl}) •");
+        if (rca.Traits.HairBackUrl != null) nextLineOfTrait.Add($"[hair back]({rca.Traits.HairBackUrl})");
 
         if (rca.Traits.HatsUrl != null) nextLineOfTrait.Add($"[hats]({rca.Traits.HatsUrl})");
 
