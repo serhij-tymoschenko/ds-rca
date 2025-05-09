@@ -58,7 +58,9 @@ public class MessagesModule(GatewayClient client)
         
         message += "\n";
         
-        message += "**Avatar traits:**";
+        message += "\n";
+        
+        message += "**Overall look:**";
         
         return message;
     }
