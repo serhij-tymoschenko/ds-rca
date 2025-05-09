@@ -18,25 +18,21 @@ public class MessagesModule(GatewayClient client)
         
         message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
         message += $"> {rca.Description}\n";
-
-        message += "\n";
-
+        
         message += "**Additional info:**\n";
         message += $"Price: {rca.Price.FormatToPrice()} •" +
                    $" Amount: {rca.Count} •" +
                    $" Author: [{rca.AuthorName}]({rca.AuthorShopUrl})\n";
-
-        message += "\n";
+        
         
         message += "**Avatar traits:**\n";
-        
         message += $"[face]({rca.Traits.FaceUrl}) •" +
                    $" [eyes]({rca.Traits.EyesUrl}) •" +
                    $" [tops]({rca.Traits.TopsUrl}) •" +
                    $" [bottoms]({rca.Traits.BottomsUrl}) •" +
-                   $" [background]({rca.Traits.BackgroundUrl}) •";
+                   $" [background]({rca.Traits.BackgroundUrl})\n";
 
-        if (rca.Traits.HairUrl != null) message += $" [hair]({rca.Traits.HairUrl}) •";
+        if (rca.Traits.HairUrl != null) message += $"[hair]({rca.Traits.HairUrl}) •";
 
         if (rca.Traits.HairBackUrl != null) message += $" [hair_back]({rca.Traits.HairBackUrl}) •";
 
