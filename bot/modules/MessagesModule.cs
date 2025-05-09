@@ -17,7 +17,7 @@ public class MessagesModule(GatewayClient client)
             message += $"**New contract:**\n";
         
         message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
-        message += $">>> {rca.Description}\n";
+        rca.Description.Split('\n').ToList().ForEach(x => message += $"> {x}\n");
         message += "\n";
         
         message += "**Additional info:**\n";
