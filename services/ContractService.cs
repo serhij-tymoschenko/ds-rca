@@ -23,10 +23,9 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                 {
                     if (token == null) throw new Exception("Token not generated");
 
-                    var isContainsLastId = entityIds.Contains(lastId);
-                    if (isContainsLastId)
+                    var lastIdIndex = entityIds.IndexOf(lastId);
+                    if (lastIdIndex != -1)
                     {
-                        var lastIdIndex = entityIds.IndexOf(lastId);
                         entityIds = entityIds.Slice(0, lastIdIndex);
                     }
 

@@ -3,7 +3,6 @@ using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 using ds_rca.utils;
-using Microsoft.Extensions.Logging;
 
 namespace ds_rca.services;
 
@@ -24,13 +23,13 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 {
                     if (token == null) throw new Exception("Token not generated");
 
-                    var isContainsLastId = storefrontIds.Contains(lastId);
-                    if (isContainsLastId)
+                    var lastIdIndex = storefrontIds.IndexOf(lastId);
+                    if (lastIdIndex != -1)
                     {
-                        var lastIdIndex = storefrontIds.IndexOf(lastId);
                         storefrontIds = storefrontIds.Slice(0, lastIdIndex);
                     }
-
+                    
+                    
                     storefrontIds.Reverse();
                     var rcas = new List<Rca>();
                     foreach (var id in storefrontIds)
