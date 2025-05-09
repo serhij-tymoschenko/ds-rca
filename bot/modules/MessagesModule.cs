@@ -18,6 +18,7 @@ public class MessagesModule(GatewayClient client)
         
         message += $"**[{rca.Title}]({rca.ShopUrl})**\n";
         message += $"> {rca.Description}\n";
+        message += "\n";
         
         message += "**Additional info:**\n";
         message += $"Price: {rca.Price.FormatToPrice()} •" +
@@ -30,7 +31,9 @@ public class MessagesModule(GatewayClient client)
                    $" [eyes]({rca.Traits.EyesUrl}) •" +
                    $" [tops]({rca.Traits.TopsUrl}) •" +
                    $" [bottoms]({rca.Traits.BottomsUrl}) •" +
-                   $" [background]({rca.Traits.BackgroundUrl})\n";
+                   $" [background]({rca.Traits.BackgroundUrl})";
+
+        message += "\n";
 
         if (rca.Traits.HairUrl != null) message += $"[hair]({rca.Traits.HairUrl}) •";
 

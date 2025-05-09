@@ -34,7 +34,8 @@ public class RedditApi(HttpClient client)
             var resMessage = await client.SendAsync(reqMessage);
             resMessage.EnsureSuccessStatusCode();
             var resContent = await resMessage.Content.ReadAsStringAsync();
-
+            Bot.Log(resContent);
+            
             var storefrontIds = Regex
                 .Matches(resContent, ApiConstants.STOREFRONT)
                 .ToList()
