@@ -48,12 +48,12 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 
                     if (localEntityIds.Count > 0)
                     {
-                        await Database.SetLastEntityIdAsync(localEntityIds[^1]);
+                        Database.SetLastEntityIdAsync(localEntityIds[^1]);
                     }
                 }
                 else if (lastId != entityIds[0])
                 {
-                    await Database.SetLastEntityIdAsync(entityIds[0]);
+                   Database.SetLastEntityIdAsync(entityIds[0]);
                 }
             }
             catch (Exception e)

@@ -51,12 +51,12 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                     
                     if (localStorefrontIds.Count > 0)
                     {
-                        await Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
+                        Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
                     }
                 }
                 else if (lastId != storefrontIds[0])
                 {
-                    await Database.SetLastStorefrontIdAsync(storefrontIds[0]);
+                    Database.SetLastStorefrontIdAsync(storefrontIds[0]);
                 }
             }
             catch (Exception e)
