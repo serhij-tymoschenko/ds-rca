@@ -26,7 +26,7 @@ public class MessagesModule(GatewayClient client)
                    "**Price:** " +
                    $"{rca.Price}\n" +
                    "**Shop:** " +
-                   $"{rca.ShopUrl}\n" +
+                   $"[shop]({rca.ShopUrl})\n" +
                    "**Traits:** " +
                    $"[face]({rca.Traits.FaceUrl}) " +
                    $"[eyes]({rca.Traits.EyesUrl}) " +
