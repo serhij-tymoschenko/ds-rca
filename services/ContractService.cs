@@ -24,13 +24,17 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     if (token == null) throw new Exception("Token not generated");
 
                     var lastIdIndex = entityIds.IndexOf(lastId);
+                    var localEntityIds = new List<string>();
                     if (lastIdIndex != -1)
                     {
-                        entityIds = entityIds.Slice(0, lastIdIndex);
+                        for (var i = 0; i < lastIdIndex; i++)
+                        {
+                            localEntityIds.Add(entityIds[i]);
+                        }
                     }
 
-                    entityIds.Reverse();
-                    var storefrontIds = await gqlApi.GetStorefrontIdsAsync(token, entityIds);
+                    localEntityIds.Reverse();
+                    var storefrontIds = await gqlApi.GetStorefrontIdsAsync(token, localEntityIds);
                     if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
 
                     var rcas = new List<Rca>();
@@ -42,9 +46,9 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
 
                     rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.CONTRACT); });
 
-                    if (entityIds.Count > 0)
+                    if (localEntityIds.Count > 0)
                     {
-                        await Database.SetLastEntityIdAsync(entityIds[^1]);
+                        await Database.SetLastEntityIdAsync(localEntityIds[^1]);
                     }
                 }
                 else if (lastId != entityIds[0])
