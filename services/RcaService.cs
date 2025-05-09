@@ -41,8 +41,6 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                     rcas.ForEach(rca =>
                     {
                         Bot.PostRcaAsync(rca, MessageType.RCA);
-                        var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
-                        Database.DeleteStorefrontAsync(storefrontId);
                     });
 
                     storefrontIds.Reverse();

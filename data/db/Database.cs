@@ -1,5 +1,6 @@
 using ds_rca.bot;
 using ds_rca.config;
+using ds_rca.data.db.modules;
 using Google.Cloud.Firestore;
 
 namespace ds_rca.data.db;
@@ -7,7 +8,8 @@ namespace ds_rca.data.db;
 public class Database
 {
     private static FirestoreDb? _db;
-    private static DatabaseActions? _dbActions;
+    private static DataModule? _dataModule;
+    private static ConfigModule? _configModule;
 
     public static void CreateInstance()
     {
@@ -19,70 +21,20 @@ public class Database
                 JsonCredentials = Config.FIREBASE_CREDENTIALS
             }.Build();
 
-            _dbActions = new DatabaseActions(_db);
+            _dataModule = new DataModule(_db);
+            _configModule = new ConfigModule(_db);
         }
         catch (Exception e)
         {
             Bot.Log($"Error initializing db: {e.Message}");
         }
     }
-
-    public static async Task AddStorefrontAsync(string storefrontId)
-    {
-        try
-        {
-            await _dbActions.AddStorefrontAsync(storefrontId);
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error adding rca: {e.Message}");
-        }
-    }
-
-    public static async Task DeleteStorefrontAsync(string storefrontId)
-    {
-        try
-        {
-            await _dbActions.DeleteStorefrontAsync(storefrontId);
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error deleting rca: {e.Message}");
-        }
-    }
-
-    public static async Task AddUserToNotifyAsync(string storefrontId, ulong serverId, ulong wishlisterId)
-    {
-        try
-        {
-            await _dbActions.AddUserToNotifyAsync(storefrontId, serverId, wishlisterId);
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error adding wishlister: {e.Message}");
-        }
-    }
-
-    public static async Task<List<ulong>> GetUsersToNotifyAsync(string storefrontId, ulong serverId)
-    {
-        try
-        {
-            var wishlister = await _dbActions.GetUsersToNotifyAsync(storefrontId, serverId);
-            return wishlister;
-        }
-        catch (Exception e)
-        {
-            Bot.Log($"Error getting wishlisters: {e.Message}");
-        }
-
-        return new List<ulong>();
-    }
-
+    
     public static async Task SetLastStorefrontIdAsync(string id)
     {
         try
         {
-            await _dbActions.SetLastStorefrontIdAsync(id);
+            await _dataModule.SetLastStorefrontIdAsync(id);
         }
         catch (Exception e)
         {
@@ -94,7 +46,7 @@ public class Database
     {
         try
         {
-            var rcaId = await _dbActions.GetLastStorefrontIdAsync();
+            var rcaId = await _dataModule.GetLastStorefrontIdAsync();
             return rcaId;
         }
         catch (Exception e)
@@ -109,7 +61,7 @@ public class Database
     {
         try
         {
-            await _dbActions.SetLastEntityIdAsync(id);
+            await _dataModule.SetLastEntityIdAsync(id);
         }
         catch (Exception e)
         {
@@ -121,7 +73,7 @@ public class Database
     {
         try
         {
-            var contractId = await _dbActions.GetLastEntityIdAsync();
+            var contractId = await _dataModule.GetLastEntityIdAsync();
             return contractId;
         }
         catch (Exception e)
@@ -136,7 +88,7 @@ public class Database
     {
         try
         {
-            await _dbActions.ConfigAsync(serverId, rcaChannelId, contractChannelId);
+            await _configModule.ConfigAsync(serverId, rcaChannelId, contractChannelId);
         }
         catch (Exception e)
         {
@@ -148,7 +100,7 @@ public class Database
     {
         try
         {
-            var idsList = await _dbActions.GetServerConfigsAsync();
+            var idsList = await _configModule.GetServerConfigsAsync();
             return idsList;
         }
         catch (Exception e)

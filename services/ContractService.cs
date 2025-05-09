@@ -11,16 +11,12 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
     public async Task StartAsync()
     {
         var token = await gqlApi.GetTokenAsync();
-        var previousEntityIds = new List<string>();
         while (true)
         {
             try
             {
                 var lastId = await Database.GetLastEntityIdAsync();
                 var entityIds = await api.GetEntityIdsAsync();
-                entityIds = previousEntityIds
-                    .Concat(entityIds)
-                    .ToList();
                 if (entityIds == null) throw new Exception("No entityIds fetched");
 
                 if (lastId.Length > 0)
@@ -37,21 +33,17 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                     entityIds.Reverse();
                     var storefrontIds = await gqlApi.GetStorefrontIdsAsync(token, entityIds);
                     if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
-
-                    previousEntityIds = new List<string>();
+                    
                     var rcas = new List<Rca>();
                     foreach (var idIndexed in storefrontIds.Select((id, index) => new {id, index}))
                     {
                         var rca = await gqlApi.GetRcaAsync(token, idIndexed.id);
-                        if (rca == null) previousEntityIds.Add(entityIds[idIndexed.index]);
                         if (rca != null) rcas.Add((Rca)rca);
                     }
                     
                     rcas.ForEach(rca =>
                     {
                         Bot.PostRcaAsync(rca, MessageType.CONTRACT);
-                        var storefrontId = rca.ShopUrl.Substring(rca.ShopUrl.LastIndexOf('/') + 1);
-                        Database.AddStorefrontAsync(storefrontId);
                     });
 
                     entityIds.Reverse();
@@ -72,7 +64,7 @@ public class ContractService(PolyscanApi api, RedditGqlApi gqlApi)
                 Bot.Log($"Error getting contracts: {e.Message}");
             }
             
-            Thread.Sleep(2400);
+            Thread.Sleep(15 * 1000 * 60);
         }
     }
 }

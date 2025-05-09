@@ -80,7 +80,6 @@ public static class Bot
             var channelIds = await Database.GetServerConfigsAsync();
 
             while (await guilds.MoveNextAsync())
-            {
                 try
                 {
                     var ids = channelIds.First(ids => ids.Server == guilds.Current.Id);
@@ -91,13 +90,12 @@ public static class Bot
                     else
                         channelId = ids.Contract;
 
-                    PostRcaToGuildAsync(channelId, rca, type, guilds.Current.Id);
+                    PostRcaToGuildAsync(channelId, rca, type);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine($"Error sending message to server: {e.Message}");
                 }
-            }
         }
         catch (Exception e)
         {
@@ -106,17 +104,9 @@ public static class Bot
     }
 
     private static async Task PostRcaToGuildAsync(ulong channelId, Rca rca,
-        MessageType type, ulong serverId)
+        MessageType type)
     {
-        var userIdsToMention = new List<ulong>();
-
-        if (type is MessageType.RCA)
-        {
-            userIdsToMention = await Database
-                .GetUsersToNotifyAsync(rca.ShopUrl.Split("/").Last(), serverId);
-        }
-
-        _messages.SendRcaDetailsAsync(channelId, rca, userIdsToMention, type);
+        _messages.SendRcaDetailsAsync(channelId, rca, type);
     }
 
     public static async Task Log(string message)

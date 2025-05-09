@@ -8,19 +8,6 @@ namespace ds_rca.bot.modules;
 
 public class SlashCommandsModule : ApplicationCommandModule<ApplicationCommandContext>
 {
-    [SlashCommand("notify", "Notifies when RCA is out")]
-    public string Wishlist(
-        [SlashCommandParameter(Name = "storefront_id",
-            Description = "Input: storefront_nft_*ID*")]
-        string storefrontId
-    )
-    {
-        if (!storefrontId.StartsWith("storefront_nft_")) return "Check command description";
-
-        Database.AddUserToNotifyAsync(storefrontId, Context.Guild.Id, Context.User.Id);
-        return "You will be notified";
-    }
-
     [SlashCommand("config", "Configures channels for messages")]
     public string Config(
         [SlashCommandParameter(Name = "rca_channel_id")]

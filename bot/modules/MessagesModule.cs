@@ -6,7 +6,7 @@ namespace ds_rca.bot.modules;
 
 public class MessagesModule(GatewayClient client)
 {
-    private string BuildMessage(Rca rca, MessageType type, List<ulong> userIds)
+    private string BuildMessage(Rca rca, MessageType type)
     {
         var message = "";
 
@@ -14,13 +14,6 @@ public class MessagesModule(GatewayClient client)
             message += "**Found new rca:**\n";
         else
             message += "**Found new contract:**\n";
-
-        if (userIds.Count > 0)
-        {
-            message += "**Asked to mention:** ";
-            userIds.ForEach(id => message += $"<@{id}> ");
-            message += "\n";
-        }
 
         message += "**Author:** " +
                    $"{rca.AuthorName} \n" +
@@ -54,14 +47,9 @@ public class MessagesModule(GatewayClient client)
         return message;
     }
 
-    public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, List<ulong> userIds, MessageType type)
+    public async Task SendRcaDetailsAsync(ulong channelId, Rca rca, MessageType type)
     {
-        var content = BuildMessage(rca, type, userIds);
-        var allowedMentions = new AllowedMentionsProperties
-        {
-            ReplyMention = true,
-            AllowedUsers = userIds.ToArray()
-        };
+        var content = BuildMessage(rca, type);
         var embed = new EmbedProperties
         {
             Image = new EmbedImageProperties(rca.ImageUrl)
@@ -69,7 +57,6 @@ public class MessagesModule(GatewayClient client)
         var message = new MessageProperties
         {
             Content = content,
-            AllowedMentions = allowedMentions,
             Embeds = new[] { embed }
         };
 
