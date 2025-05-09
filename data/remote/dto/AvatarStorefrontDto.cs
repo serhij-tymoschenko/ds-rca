@@ -57,6 +57,7 @@ public class AvatarStorefrontDto
     public class RedditorInfo
     {
         [JsonProperty("displayName")] public string DisplayName { get; set; }
+        [JsonProperty("prefixedName")] public string PrefixedName { get; set; }
     }
 
     public class StorefrontItem

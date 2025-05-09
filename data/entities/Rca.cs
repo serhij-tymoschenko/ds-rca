@@ -5,6 +5,7 @@ public struct Rca
     public required string Title { get; init; }
     public required string Description { get; init; }
     public required string AuthorName { get; init; }
+    public required string AuthorShopUrl { get; init; }
     public required int Count { get; init; }
     public required string Price { get; init; }
     public required string ShopUrl { get; init; }

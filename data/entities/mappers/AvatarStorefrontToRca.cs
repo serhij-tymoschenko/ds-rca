@@ -12,6 +12,7 @@ public static class AvatarStorefrontToRca
         var title = node.Item.Nft.Title;
         var description = node.Item.Nft.Description;
         var authorName = node.Artist.RedditorInfo.DisplayName;
+        var authorShopUrl = $"https://www.reddit.com/avatar/shop/artist/{node.Artist.RedditorInfo.PrefixedName.Substring(2)}";
         var count = node.Item.Drop.Size;
         var imageUrl = node.Item.Benefits.AvatarOutfit.PreRenderImage.Url;
         var price = node.ProductOffer.PricePackages[0].Price;
@@ -24,6 +25,7 @@ public static class AvatarStorefrontToRca
             Title = title,
             Description = description,
             AuthorName = authorName,
+            AuthorShopUrl = authorShopUrl,
             Count = count,
             ImageUrl = imageUrl,
             Price = price,
