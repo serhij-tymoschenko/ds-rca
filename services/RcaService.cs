@@ -110,6 +110,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
     {
         var initialLastId = await Database.GetLastStorefrontIdAsync();
         SetLastId(initialLastId);
+
         StartMainPageFetching();
         StartCategoryFetching();
 
@@ -118,20 +119,11 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
         {
             try
             {
-                SetLastId(await Database.GetLastStorefrontIdAsync());
                 var storefrontIds = GetStorefrontIds();
-                
                 if (token == null) throw new Exception("Token not generated");
 
-                var lastIdIndex = storefrontIds.IndexOf(GetLastId());
-                var localStorefrontIds = new List<string>();
-                if (lastIdIndex != -1)
-                    for (var i = 0; i < lastIdIndex; i++)
-                        localStorefrontIds.Add(storefrontIds[i]);
-
-                localStorefrontIds.Reverse();
                 var rcas = new List<Rca>();
-                foreach (var id in localStorefrontIds)
+                foreach (var id in storefrontIds)
                 {
                     var rca = await gqlApi.GetRcaAsync(token, id);
                     if (rca != null) rcas.Add((Rca)rca);
@@ -139,7 +131,11 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
 
                 rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.RCA); });
 
-                if (localStorefrontIds.Count > 0) Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
+                if (storefrontIds.Count > 0)
+                {
+                    Database.SetLastStorefrontIdAsync(storefrontIds[^1]);
+                    SetLastId(await Database.GetLastStorefrontIdAsync());
+                }
             }
             catch (Exception e)
             {
