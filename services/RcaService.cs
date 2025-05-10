@@ -61,10 +61,6 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                     for (var i = 0; i < lastIdIndex; i++) localStorefrontIds.Add(storefrontIds[i]);
                     SetStorefrontIds(localStorefrontIds);
                 }
-                else
-                {
-                    SetStorefrontIds(storefrontIds);
-                }
             }
             catch (Exception e)
             {
@@ -91,10 +87,6 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                     var localStorefrontIds = new List<string>();
                     for (var i = 0; i < lastIdIndex; i++) localStorefrontIds.Add(storefrontIds[i]);
                     SetStorefrontIds(localStorefrontIds);
-                }
-                else
-                {
-                    SetStorefrontIds(storefrontIds);
                 }
             }
             catch (Exception e)
