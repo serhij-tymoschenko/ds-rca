@@ -22,6 +22,7 @@ public class RedditApi(HttpClient client, CookieContainer cookies)
             {
                 { "Accept", "text/vnd.reddit.partial+html, text/html;q=0.9" },
                 { "Connection", "keep-alive" },
+                { "Authorization", $"Bearer {Config.REDDIT_API_KEY}" },
                 { "User-Agent", "Rca" }
             }
         };
