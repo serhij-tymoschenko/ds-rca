@@ -134,7 +134,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 if (storefrontIds.Count > 0)
                 {
                     Database.SetLastStorefrontIdAsync(storefrontIds[^1]);
-                    SetLastId(await Database.GetLastStorefrontIdAsync());
+                    SetLastId(storefrontIds[^1]);
                 }
             }
             catch (Exception e)
