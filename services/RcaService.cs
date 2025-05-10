@@ -3,61 +3,143 @@ using ds_rca.data.db;
 using ds_rca.data.entities;
 using ds_rca.data.remote.api;
 using ds_rca.utils;
-using Microsoft.Extensions.Logging;
 
 namespace ds_rca.services;
 
 public class RcaService(RedditApi api, RedditGqlApi gqlApi)
 {
+    private string lastId = "";
+    private List<string> storefrontIds = new();
+
+    private void SetLastId(string id)
+    {
+        lock (lastId)
+        {
+            lastId = id;
+        }
+    }
+
+    private string GetLastId()
+    {
+        lock (lastId)
+        {
+            return lastId;
+        }
+    }
+
+    private void SetStorefrontIds(List<string> newStorefrontIds)
+    {
+        lock (storefrontIds)
+        {
+            if (!storefrontIds.SequenceEqual(newStorefrontIds)) storefrontIds = newStorefrontIds;
+        }
+    }
+
+    private List<string> GetStorefrontIds()
+    {
+        lock (storefrontIds)
+        {
+            return storefrontIds;
+        }
+    }
+
+    private async Task StartMainPageFetching()
+    {
+        var session = await api.GetSession();
+        while (true)
+        {
+            try
+            {
+                var storefrontIds = await api.GetMainPageStorefrontIds(session);
+                if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
+
+                var lastIdIndex = storefrontIds.IndexOf(GetLastId());
+                if (lastIdIndex != -1)
+                {
+                    var localStorefrontIds = new List<string>();
+                    for (var i = 0; i < lastIdIndex; i++) localStorefrontIds.Add(storefrontIds[i]);
+                    SetStorefrontIds(localStorefrontIds);
+                }
+                else
+                {
+                    SetStorefrontIds(storefrontIds);
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is AuthException) session = await api.GetSession();
+                Bot.Log($"Error getting fetching main page: {e.Message}");
+            }
+
+            Thread.Sleep(1200);
+        }
+    }
+
+    private async Task StartCategoryFetching()
+    {
+        while (true)
+        {
+            try
+            {
+                var storefrontIds = await api.GetStorefrontIdsAsync();
+                if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
+
+                var lastIdIndex = storefrontIds.IndexOf(GetLastId());
+                if (lastIdIndex != -1)
+                {
+                    var localStorefrontIds = new List<string>();
+                    for (var i = 0; i < lastIdIndex; i++) localStorefrontIds.Add(storefrontIds[i]);
+                    SetStorefrontIds(localStorefrontIds);
+                }
+                else
+                {
+                    SetStorefrontIds(storefrontIds);
+                }
+            }
+            catch (Exception e)
+            {
+                Bot.Log($"Error getting fetching main page: {e.Message}");
+            }
+
+            Thread.Sleep(2400);
+        }
+    }
+
+
     public async Task StartAsync()
     {
+        var initialLastId = await Database.GetLastStorefrontIdAsync();
+        SetLastId(initialLastId);
+        StartMainPageFetching();
+        StartCategoryFetching();
+
         var token = await gqlApi.GetTokenAsync();
         while (true)
         {
             try
             {
-                var lastId = await Database.GetLastStorefrontIdAsync();
-                var storefrontIds = await api.GetStorefrontIdsAsync();
-                if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
+                SetLastId(await Database.GetLastStorefrontIdAsync());
+                var storefrontIds = GetStorefrontIds();
+                
+                if (token == null) throw new Exception("Token not generated");
 
-                if (lastId.Length > 0)
+                var lastIdIndex = storefrontIds.IndexOf(GetLastId());
+                var localStorefrontIds = new List<string>();
+                if (lastIdIndex != -1)
+                    for (var i = 0; i < lastIdIndex; i++)
+                        localStorefrontIds.Add(storefrontIds[i]);
+
+                localStorefrontIds.Reverse();
+                var rcas = new List<Rca>();
+                foreach (var id in localStorefrontIds)
                 {
-                    if (token == null) throw new Exception("Token not generated");
-
-                    var lastIdIndex = storefrontIds.IndexOf(lastId);
-                    var localStorefrontIds = new List<string>();
-                    if (lastIdIndex != -1)
-                    {
-                        for (var i = 0; i < lastIdIndex; i++)
-                        {
-                            localStorefrontIds.Add(storefrontIds[i]);
-                        }
-                    }
-                    
-                    
-                    
-                    localStorefrontIds.Reverse();
-                    var rcas = new List<Rca>();
-                    foreach (var id in localStorefrontIds)
-                    {
-                        var rca = await gqlApi.GetRcaAsync(token, id);
-                        if (rca != null) rcas.Add((Rca)rca);
-                    }
-
-                    rcas.ForEach(rca =>
-                    {
-                        Bot.PostRcaAsync(rca, MessageType.RCA);
-                    });
-                    
-                    if (localStorefrontIds.Count > 0)
-                    {
-                        Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
-                    }
+                    var rca = await gqlApi.GetRcaAsync(token, id);
+                    if (rca != null) rcas.Add((Rca)rca);
                 }
-                else if (lastId != storefrontIds[0])
-                {
-                    Database.SetLastStorefrontIdAsync(storefrontIds[0]);
-                }
+
+                rcas.ForEach(rca => { Bot.PostRcaAsync(rca, MessageType.RCA); });
+
+                if (localStorefrontIds.Count > 0) Database.SetLastStorefrontIdAsync(localStorefrontIds[^1]);
             }
             catch (Exception e)
             {
@@ -65,7 +147,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
                 Bot.Log($"Error getting rcas: {e.Message}");
             }
 
-            Thread.Sleep(1200);
+            Thread.Sleep(2400);
         }
     }
 }

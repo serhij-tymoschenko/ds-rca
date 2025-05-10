@@ -11,9 +11,11 @@
 
     <ItemGroup>
         <PackageReference Include="Google.Cloud.Firestore" Version="3.10.0"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
         <PackageReference Include="NetCord" Version="1.0.0-alpha.365"/>
         <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.365"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="System.Linq" Version="4.3.0" />
     </ItemGroup>
 
 </Project>

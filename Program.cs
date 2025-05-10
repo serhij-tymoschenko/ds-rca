@@ -1,4 +1,5 @@
-﻿using ds_rca.bot;
+﻿using System.Net;
+using ds_rca.bot;
 using ds_rca.data.db;
 using ds_rca.data.remote.api;
 using ds_rca.services;
@@ -12,8 +13,15 @@ internal class Program
         Bot.CreateInstance();
         Database.CreateInstance();
 
-        var client = new HttpClient();
-        var redditApi = new RedditApi(client);
+        var cookieContainer = new CookieContainer();
+        var handler = new HttpClientHandler
+        {
+            CookieContainer = cookieContainer,
+            UseCookies = true
+        };
+        var client = new HttpClient(handler);
+        
+        var redditApi = new RedditApi(client, cookieContainer);
         var redditGqlApi = new RedditGqlApi(client);
         var polyscanApi = new PolyscanApi(client);
 

@@ -13,5 +13,6 @@ public class ApiConstants
     public const string USER_AGENT = "Reddit/Version 2023.21.0/Build 956283/Android 13";
     public const string CLIENT_ID = "ohXpoqrZYub1kg";
     
-    public const string STOREFRONT = "storefront_nft_.{26}";
+    public const string STOREFRONT_REGEX = "storefront_nft_.{26}";
+    public const string POST_DATA_REGEX = @"name=""postData""\s+value=""(?<json>(?:[^""\\]|\\.)*)""";
 }
