@@ -68,7 +68,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             catch (Exception e)
             {
                 if (e is AuthException) session = await api.GetSession();
-                Bot.Log($"Error getting fetching main page: {e.Message}");
+                Bot.Log($"Error fetching main page: {e.Message}");
             }
 
             Thread.Sleep(1200);
@@ -98,7 +98,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
             }
             catch (Exception e)
             {
-                Bot.Log($"Error getting fetching main page: {e.Message}");
+                Bot.Log($"Error fetching category: {e.Message}");
             }
 
             Thread.Sleep(2400);
