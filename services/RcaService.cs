@@ -50,6 +50,7 @@ public class RcaService(RedditApi api, RedditGqlApi gqlApi)
         {
             try
             {
+                if (session == null) throw new Exception("Session is null");
                 var storefrontIds = await api.GetMainPageStorefrontIds(session);
                 if (storefrontIds == null) throw new Exception("No storefrontIds fetched");
 
